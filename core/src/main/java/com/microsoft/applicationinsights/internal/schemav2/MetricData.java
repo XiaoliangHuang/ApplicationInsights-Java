@@ -37,7 +37,7 @@ public class MetricData extends Domain implements JsonSerializable {
     /**
      * Envelope Name for this telemetry.
      */
-    public static final String METRIC_ENVELOPE_NAME = "Microsoft.ApplicationInsights.Metric";
+    public static final String METRIC_ENVELOPE_NAME = "Metric";
 
     /**
      * Base Type for this telemetry.

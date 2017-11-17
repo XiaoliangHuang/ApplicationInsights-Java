@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import com.microsoft.applicationinsights.agent.internal.common.StringUtils;
 import com.microsoft.applicationinsights.internal.schemav2.Data;
 import com.microsoft.applicationinsights.internal.schemav2.Envelope;
 import com.microsoft.applicationinsights.internal.schemav2.SendableData;
@@ -42,6 +43,8 @@ public abstract class BaseTelemetry<T extends SendableData> implements Telemetry
     private Date             timestamp;
     private String           sequence;
 
+    private final String TELEMETRY_NAME_PREFIX = "Microsoft.ApplicationInsights.";
+    
     protected BaseTelemetry() {
     }
 
@@ -131,15 +134,22 @@ public abstract class BaseTelemetry<T extends SendableData> implements Telemetry
     @Override
     public void serialize(JsonTelemetryDataSerializer writer) throws IOException {
 
+    	Data<T> telemetryData = new Data<T>(getData());
+    	
+    	String telemetryName = this.getTelemetryName(
+    			this.normalizeInstrumentationKey(context.getInstrumentationKey()), 
+    			telemetryData.getEnvelopName());
+    	
         Envelope envelope = new Envelope();
 
         setSampleRate(envelope);
         envelope.setIKey(context.getInstrumentationKey());
         envelope.setSeq(sequence);
-        envelope.setData(new Data<T>(getData()));
+        envelope.setData(telemetryData);
         envelope.setTime(LocalStringsUtils.getDateFormatter().format(getTimestamp()));
-        envelope.setTags(context.getTags());
-
+        envelope.setTags(context.getTags());       
+        envelope.setName(telemetryName);
+ 
         envelope.serialize(writer);
     }
 
@@ -160,5 +170,23 @@ public abstract class BaseTelemetry<T extends SendableData> implements Telemetry
     protected abstract T getData();
 
     protected void setSampleRate(Envelope envelope) {
+    }
+    
+    private String normalizeInstrumentationKey(String instrumentationKey){
+    	if (StringUtils.isNullOrEmpty(instrumentationKey)){
+    		return "";
+    	}
+    	else{
+    		return instrumentationKey.replace("-", "").toLowerCase() + ".";
+    	}
+    }
+
+    private String getTelemetryName(String normalizedInstrumentationKey, String envelopType){
+    	return String.format(
+    			"%s%s%s",
+    			TELEMETRY_NAME_PREFIX,
+    			normalizedInstrumentationKey,
+    			envelopType
+    			);
     }
 }

@@ -32,7 +32,7 @@ public class PageViewPerfData extends PageViewData {
     /**
      * Envelope Name for this telemetry.
      */
-    public static final String PAGE_VIEW_PERF_ENVELOPE_NAME = "Microsoft.ApplicationInsights.PageViewPerf";
+    public static final String PAGE_VIEW_PERF_ENVELOPE_NAME = "PageViewPerf";
 
     /**
      * Base Type for this telemetry.

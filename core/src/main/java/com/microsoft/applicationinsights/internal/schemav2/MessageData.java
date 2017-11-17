@@ -36,7 +36,7 @@ public class MessageData extends Domain implements JsonSerializable {
     /**
      * Envelope Name for this telemetry.
      */
-    public static final String MESSAGE_ENVELOPE_NAME = "Microsoft.ApplicationInsights.Message";
+    public static final String MESSAGE_ENVELOPE_NAME = "Message";
 
     /**
      * Base Type for this telemetry.

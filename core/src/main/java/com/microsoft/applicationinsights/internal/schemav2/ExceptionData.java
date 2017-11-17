@@ -39,7 +39,7 @@ public class ExceptionData extends Domain implements JsonSerializable {
     /**
      * Envelope Name for this telemetry.
      */
-    public static final String EXCEPTION_ENVELOPE_NAME = "Microsoft.ApplicationInsights.Exception";
+    public static final String EXCEPTION_ENVELOPE_NAME = "Exception";
 
     /**
      * Base Type for this telemetry.

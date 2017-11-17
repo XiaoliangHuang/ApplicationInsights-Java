@@ -36,7 +36,7 @@ public class EventData extends Domain {
     /**
      * Envelope Name for this telemetry.
      */
-    private static final String EVENT_ENVELOPE_NAME = "Microsoft.ApplicationInsights.Event";
+    private static final String EVENT_ENVELOPE_NAME = "Event";
 
     /**
      * Base Type for this telemetry.

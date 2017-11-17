@@ -35,7 +35,7 @@ public class Domain implements SendableData
     /**
      * Envelope Name for this telemetry.
      */
-    private static final String DOMAIN_ENVELOPE_NAME = "Microsoft.ApplicationInsights.Do";
+    private static final String DOMAIN_ENVELOPE_NAME = "Do";
 
     /**
      * Base Type for this telemetry.

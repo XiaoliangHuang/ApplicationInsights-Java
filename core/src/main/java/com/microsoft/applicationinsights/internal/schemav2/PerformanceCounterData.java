@@ -36,7 +36,7 @@ public final class PerformanceCounterData extends Domain {
     /**
      * Envelope Name for this telemetry.
      */
-    private static final String PERFORMANCE_COUNTER_ENVELOPE_NAME = "Microsoft.ApplicationInsights.PerformanceCounter";
+    private static final String PERFORMANCE_COUNTER_ENVELOPE_NAME = "PerformanceCounter";
 
     /**
      * Base Type for this telemetry.

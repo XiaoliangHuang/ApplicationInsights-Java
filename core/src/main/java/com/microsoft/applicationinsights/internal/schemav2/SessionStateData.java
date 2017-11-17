@@ -35,7 +35,7 @@ public final class SessionStateData extends Domain {
     /**
      * Envelope Name for this telemetry.
      */
-    private static final String SESSION_ENVELOPE_NAME = "Microsoft.ApplicationInsights.SessionState";
+    private static final String SESSION_ENVELOPE_NAME = "SessionState";
 
     /**
      * Base Type for this telemetry.

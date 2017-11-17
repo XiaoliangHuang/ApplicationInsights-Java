@@ -35,7 +35,7 @@ public class RemoteDependencyData extends Domain {
     /**
      * Envelope Name for this telemetry.
      */
-    public static final String REMOTE_ENVELOPE_NAME = "Microsoft.ApplicationInsights.RemoteDependency";
+    public static final String REMOTE_ENVELOPE_NAME = "RemoteDependency";
 
     /**
      * Base Type for this telemetry.

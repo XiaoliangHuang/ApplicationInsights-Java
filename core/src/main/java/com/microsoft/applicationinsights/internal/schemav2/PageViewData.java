@@ -33,7 +33,7 @@ public class PageViewData extends EventData {
     /**
      * Envelope Name for this telemetry.
      */
-    public static final String PAGE_VIEW_ENVELOPE_NAME = "Microsoft.ApplicationInsights.PageView";
+    public static final String PAGE_VIEW_ENVELOPE_NAME = "PageView";
 
     /**
      * Base Type for this telemetry.

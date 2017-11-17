@@ -36,7 +36,7 @@ public class RequestData extends Domain {
     /**
      * Envelope Name for this telemetry.
      */
-    public static final String REQUEST_ENVELOPE_NAME = "Microsoft.ApplicationInsights.Request";
+    public static final String REQUEST_ENVELOPE_NAME = "Request";
 
     /**
      * Base Type for this telemetry.
