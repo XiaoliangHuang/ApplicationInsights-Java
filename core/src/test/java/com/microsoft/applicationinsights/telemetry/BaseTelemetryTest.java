@@ -25,6 +25,7 @@ import com.microsoft.applicationinsights.internal.schemav2.SendableData;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -35,14 +36,15 @@ import static org.junit.Assert.assertNotNull;
 
 public final class BaseTelemetryTest {
     private static class StubSendableData implements SendableData {
+    	
         @Override
         public String getEnvelopName() {
-            return null;
+            return "Stub";
         }
 
         @Override
         public String getBaseTypeName() {
-            return null;
+            return "StubData";
         }
 
         @Override
@@ -53,11 +55,14 @@ public final class BaseTelemetryTest {
 
     private static class StubTelemetry extends BaseTelemetry<StubSendableData> {
         public int numberOfCallsToAdditionalSanitize;
+        private StubSendableData data;
 
         public StubTelemetry() {
+        	data = new StubSendableData();
         }
 
         public StubTelemetry(String d) {
+        	this();
             initialize(new ConcurrentHashMap<String, String>());
         }
 
@@ -68,7 +73,8 @@ public final class BaseTelemetryTest {
 
         @Override
         protected StubSendableData getData() {
-            return null;
+        	return data;
+        	
         }
     }
 
@@ -121,4 +127,52 @@ public final class BaseTelemetryTest {
 
         assertEquals(telemetry.numberOfCallsToAdditionalSanitize, 1);
     }
+
+    @Test
+    public void testTelemetryNameWithIkey() throws IOException{
+        StubTelemetry telemetry = new StubTelemetry("Test Base Telemetry");
+        telemetry.getContext().setInstrumentationKey("AIF-00000000-1111-2222-3333-000000000000");
+        telemetry.setTimestamp(new Date());
+        
+        StringWriter writer = new StringWriter();
+        JsonTelemetryDataSerializer jsonWriter = new JsonTelemetryDataSerializer(writer);
+        telemetry.serialize(jsonWriter);
+        jsonWriter.close();
+        String asJson = writer.toString();
+        
+        int index = asJson.indexOf("\"name\":\"Microsoft.ApplicationInsights.aif00000000111122223333000000000000.Stub\"");
+        assertTrue(index != -1);
+    }
+    
+    @Test
+    public void testTelemetryNameWithIkey_SpecialChar() throws IOException{
+        StubTelemetry telemetry = new StubTelemetry("Test Base Telemetry");
+        telemetry.getContext().setInstrumentationKey("--. .--");
+        telemetry.setTimestamp(new Date());
+        
+        StringWriter writer = new StringWriter();
+        JsonTelemetryDataSerializer jsonWriter = new JsonTelemetryDataSerializer(writer);
+        telemetry.serialize(jsonWriter);
+        jsonWriter.close();
+        String asJson = writer.toString();
+        
+        int index = asJson.indexOf("\"name\":\"Microsoft.ApplicationInsights.Stub\"");
+        assertTrue(index != -1);
+    }
+    
+    @Test
+    public void testTelemetryNameWithIkey_Empty() throws IOException{
+        StubTelemetry telemetry = new StubTelemetry("Test Base Telemetry");
+        telemetry.setTimestamp(new Date());
+        
+        StringWriter writer = new StringWriter();
+        JsonTelemetryDataSerializer jsonWriter = new JsonTelemetryDataSerializer(writer);
+        telemetry.serialize(jsonWriter);
+        jsonWriter.close();
+        String asJson = writer.toString();
+        
+        int index = asJson.indexOf("\"name\":\"Microsoft.ApplicationInsights.Stub\"");
+        assertTrue(index != -1);
+    }
 }
+

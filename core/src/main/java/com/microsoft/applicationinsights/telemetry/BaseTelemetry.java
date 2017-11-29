@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.microsoft.applicationinsights.agent.internal.common.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import com.microsoft.applicationinsights.internal.schemav2.Data;
 import com.microsoft.applicationinsights.internal.schemav2.Envelope;
 import com.microsoft.applicationinsights.internal.schemav2.SendableData;
@@ -137,8 +137,7 @@ public abstract class BaseTelemetry<T extends SendableData> implements Telemetry
     	Data<T> telemetryData = new Data<T>(getData());
     	
     	String telemetryName = this.getTelemetryName(
-    			this.normalizeInstrumentationKey(context.getInstrumentationKey()), 
-    			telemetryData.getEnvelopName());
+    			this.normalizeInstrumentationKey(context.getInstrumentationKey()), telemetryData.getEnvelopName());
     	
         Envelope envelope = new Envelope();
 
@@ -173,12 +172,12 @@ public abstract class BaseTelemetry<T extends SendableData> implements Telemetry
     }
     
     private String normalizeInstrumentationKey(String instrumentationKey){
-    	if (StringUtils.isNullOrEmpty(instrumentationKey)){
-    		return "";
-    	}
-    	else{
-    		return instrumentationKey.replace("-", "").toLowerCase() + ".";
-    	}
+        if (StringUtils.isEmpty(instrumentationKey) || StringUtils.containsOnly(instrumentationKey, ".- ")){
+            return "";
+        }
+        else{
+            return instrumentationKey.replace("-", "").toLowerCase() + ".";
+        }
     }
 
     private String getTelemetryName(String normalizedInstrumentationKey, String envelopType){
